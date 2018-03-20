@@ -25,7 +25,6 @@ public class BackgroundMail {
     private String username;
     private String password;
     private String mailto;
-    private String mailCC;
     private String subject;
     private String body;
     private String type;
@@ -66,7 +65,6 @@ public class BackgroundMail {
         username = builder.username;
         password = builder.password;
         mailto = builder.mailto;
-        mailCC = builder.mailCC;
         subject = builder.subject;
         body = builder.body;
         type = builder.type;
@@ -141,22 +139,9 @@ public class BackgroundMail {
         this.mailto = mContext.getResources().getString(strRes);
     }
 
-    public void setMailCC(@NonNull String string) {
-        this.mailCC = string;
-    }
-
-    public void setMailCC(@StringRes int strRes) {
-        this.mailCC = mContext.getResources().getString(strRes);
-    }
-
     @NonNull
     public String getMailTo() {
         return mailto;
-    }
-
-    @NonNull
-    public String getMailCC() {
-        return mailCC;
     }
 
     public void setFormSubject(@NonNull String string) {
@@ -265,9 +250,6 @@ public class BackgroundMail {
         if (TextUtils.isEmpty(mailto)) {
             throw new IllegalArgumentException("You didn't set a Gmail recipient");
         }
-        if (TextUtils.isEmpty(mailCC)) {
-            throw new IllegalArgumentException("You didn't set a Gmail recipient");
-        }
         if (TextUtils.isEmpty(body)) {
             throw new IllegalArgumentException("You didn't set a body");
         }
@@ -305,7 +287,7 @@ public class BackgroundMail {
                         }
                     }
                 }
-                sender.sendMail(subject, body, username, mailto,mailCC, type);
+                sender.sendMail(subject, body, username, mailto, type);
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -342,7 +324,6 @@ public class BackgroundMail {
         private String username;
         private String password;
         private String mailto;
-        private String mailCC;
         private String subject;
         private String body;
         private String type = BackgroundMail.TYPE_PLAIN;
@@ -388,16 +369,6 @@ public class BackgroundMail {
 
         public Builder withMailto(@StringRes int mailtoRes) {
             this.mailto = context.getResources().getString(mailtoRes);
-            return this;
-        }
-
-        public Builder withMailCC(@NonNull String mailCC) {
-            this.mailCC = mailCC;
-            return this;
-        }
-
-        public Builder withMailCC(@StringRes int mailCCRes) {
-            this.mailCC = context.getResources().getString(mailCCRes);
             return this;
         }
 
