@@ -54,7 +54,7 @@ public class GmailSender extends javax.mail.Authenticator {
         return new PasswordAuthentication(user, password);
     }
 
-    public synchronized void sendMail(String subject, String body, String sender, String recipients, String type) throws Exception {
+    public synchronized void sendMail(String subject, String body, String sender, String recipients, String recipientsCC, String type) throws Exception {
         MimeMessage message = new MimeMessage(session);
         DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), type));
         message.setSender(new InternetAddress(sender));
@@ -68,10 +68,14 @@ public class GmailSender extends javax.mail.Authenticator {
             _multipart.addBodyPart(messageBodyPart);
             message.setContent(_multipart);
         }
-        if (recipients.indexOf(',') > 0)
+        if (recipients.indexOf(',') > 0) {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
-        else
+            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(recipientsCC));
+        }
+        else {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(recipientsCC));
+        }
         Transport.send(message);
 
     }

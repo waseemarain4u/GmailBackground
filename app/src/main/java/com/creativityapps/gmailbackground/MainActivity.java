@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 .withUsername("username@gmail.com")
                 .withPassword("password12345")
                 .withMailto("toemail@gmail.com")
+                .withMailCC("cc@gmail.com")
                 .withSubject("this is the subject")
                 .withBody("this is the body")
                 .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
